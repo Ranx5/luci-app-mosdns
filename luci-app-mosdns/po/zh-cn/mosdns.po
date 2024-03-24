@@ -250,6 +250,15 @@ msgstr "思科公共 DNS（208.67.222.222）"
 msgid "Cisco Public DNS (208.67.220.220)"
 msgstr "思科公共 DNS（208.67.220.220）"
 
+msgid "Socks5 Proxy"
+msgstr "Socks5 代理"
+
+msgid "Socks5 Address"
+msgstr "Socks5 地址"
+
+msgid "Format: 127.0.0.1:1080, Remote DNS data will be relayed through this proxy. Only TCP-based protocol DNS is supported"
+msgstr "格式：127.0.0.1:1080，远程 DNS 数据将会通过该代理中转，仅支持基于 TCP 协议的 DNS"
+
 msgid "Concurrent"
 msgstr "DNS 服务器并发数（默认 2）"
 

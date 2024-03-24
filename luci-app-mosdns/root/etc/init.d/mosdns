@@ -62,6 +62,8 @@ get_config() {
     config_get remote_ecs_ip $1 remote_ecs_ip "110.34.181.1"
     config_get dns_leak $1 dns_leak 0
     config_get cloudflare $1 cloudflare 0
+	config_get enable_socks5 $1 enable_socks5 0
+	config_get socks5_address $1 socks5_address ""
 }
 
 init_yaml() {
@@ -88,7 +90,7 @@ init_yaml() {
         if ($i ~ /^h3:\/\//) {
           printf "%s- addr: \"%s\"\n%s  bootstrap: '${bootstrap_dns}'\n%s  enable_pipeline: '${enable_pipeline}'\n%s  insecure_skip_verify: '${insecure_skip_verify}'\n%s  idle_timeout: '${idle_timeout}'\n%s  enable_http3: true\n",s,$i,s,s,s,s,s
         } else {
-          printf "%s- addr: \"%s\"\n%s  bootstrap: '${bootstrap_dns}'\n%s  enable_pipeline: '${enable_pipeline}'\n%s  insecure_skip_verify: '${insecure_skip_verify}'\n%s  idle_timeout: '${idle_timeout}'\n",s,$i,s,s,s,s
+          printf "%s- addr: \"%s\"\n%s  bootstrap: '${bootstrap_dns}'\n%s  enable_pipeline: '${enable_pipeline}'\n%s  insecure_skip_verify: '${insecure_skip_verify}'\n%s  idle_timeout: '${idle_timeout}'\n%s  socks5: '${socks5_address}'\n",s,$i,s,s,s,s,s
         }
       }
     }')
@@ -109,6 +111,8 @@ init_yaml() {
     # DNS
     echo "${local_dns}" > $TMPDIR/local_dns.txt
     echo "${remote_dns}" > $TMPDIR/remote_dns.txt
+    # Socks
+    [ "$enable_socks5" -eq 0 ] && sed -i '/socks5/d' $TMPDIR/remote_dns.txt
     sed -i -e '/- addr: local_dns/{r '$TMPDIR/local_dns.txt -e';d};/- addr: remote_dns/{r '$TMPDIR/remote_dns.txt -e';d}' $CONF
     # Convert HTTP/3 prefix format
     sed -i 's/h3:\/\//https:\/\//g' $CONF

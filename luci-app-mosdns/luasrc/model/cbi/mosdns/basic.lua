@@ -85,6 +85,13 @@ o:value("tls://208.67.222.222", translate("Cisco Public DNS (208.67.222.222)"))
 o:value("tls://208.67.220.220", translate("Cisco Public DNS (208.67.220.220)"))
 o:depends("configfile", "/etc/mosdns/config.yaml")
 
+o = s:taboption("basic", Flag, "enable_socks5", translate("Socks5 Proxy"))
+o.default = false
+o:depends("configfile", "/etc/mosdns/config.yaml")
+
+o = s:taboption("basic", Value, "socks5_address", translate("Socks5 Address"), translate("Format: 127.0.0.1:1080, Remote DNS data will be relayed through this proxy. Only TCP-based protocol DNS is supported"))
+o:depends("enable_socks5", "1")
+
 o = s:taboption("basic", ListValue, "bootstrap_dns", translate("Bootstrap DNS servers"), translate("Bootstrap DNS servers are used to resolve IP addresses of the DoH/DoT resolvers you specify as upstreams"))
 o:value("119.29.29.29", translate("Tencent Public DNS (119.29.29.29)"))
 o:value("119.28.28.28", translate("Tencent Public DNS (119.28.28.28)"))
